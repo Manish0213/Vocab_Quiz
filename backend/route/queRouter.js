@@ -68,4 +68,9 @@ router.get('/fetchvocab/:id', async (req, res) => {
   res.send(vacab);
 })
 
+router.get('/fetchallvocab', async (req, res) => {
+  const vocabs = await Vocabulary.find({});
+  res.send(vocabs);
+})
+
 module.exports = router;

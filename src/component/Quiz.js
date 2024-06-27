@@ -64,7 +64,7 @@ const Quiz = () => {
 
   return (
     <>
-      <div>
+      <div className="quiz-container">
         <h2>{currentQuestion.question}</h2>
         <ul>
           {currentQuestion.options.map((option, index) => (
@@ -75,9 +75,9 @@ const Quiz = () => {
                 style={{
                   backgroundColor: isAnswered
                     ? index === currentQuestion.correctIndex
-                      ? "green"
+                      ? "rgba(72, 175, 77, 0.877)"
                       : index === selectedOptionIndex
-                      ? "red"
+                      ? "rgba(199, 63, 63, 0.945)"
                       : "white"
                     : "white",
                   color: isAnswered
@@ -99,7 +99,7 @@ const Quiz = () => {
           ))}
         </ul>
         <button onClick={handleNextQuestion} disabled={!isAnswered}>
-          Next Question
+          Next
         </button>
       </div>
 
@@ -114,7 +114,7 @@ const Quiz = () => {
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Modal title
+                description
               </h1>
               <button
                 type="button"
@@ -131,18 +131,7 @@ const Quiz = () => {
               </>)      
               }
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">
-                Save changes
-              </button>
-            </div>
+            {/* close and update button to be added */}
           </div>
         </div>
       </div>
