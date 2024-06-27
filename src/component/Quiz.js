@@ -7,6 +7,7 @@ const Quiz = () => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [isAnswered, setIsAnswered] = useState(false);
 
   useEffect(() => {
     // Fetch the quiz questions from the backend
@@ -16,15 +17,19 @@ const Quiz = () => {
   }, []);
 
   const handleOptionClick = (optionIndex) => {
-    setSelectedOptionIndex(optionIndex);
+    if (!isAnswered) {
+      setSelectedOptionIndex(optionIndex);
+      setIsAnswered(true);
+
+      if (optionIndex === quizQuestions[currentQuestionIndex].correctIndex) {
+        setScore(score + 1);
+      }
+    }
   };
 
   const handleNextQuestion = () => {
-    if (selectedOptionIndex === quizQuestions[currentQuestionIndex].correctIndex) {
-      setScore(score + 1);
-    }
-
     setSelectedOptionIndex(null);
+    setIsAnswered(false);
 
     if (currentQuestionIndex < quizQuestions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -57,15 +62,29 @@ const Quiz = () => {
             <button
               onClick={() => handleOptionClick(index)}
               style={{
-                backgroundColor: selectedOptionIndex === index ? 'lightblue' : 'white',
+                backgroundColor: isAnswered
+                  ? index === currentQuestion.correctIndex
+                    ? 'green'
+                    : index === selectedOptionIndex
+                    ? 'red'
+                    : 'white'
+                  : 'white',
+                color: isAnswered
+                  ? index === currentQuestion.correctIndex
+                    ? 'white'
+                    : index === selectedOptionIndex
+                    ? 'white'
+                    : 'black'
+                  : 'black',
               }}
+              disabled={isAnswered}
             >
               {option.meaning}
             </button>
           </li>
         ))}
       </ul>
-      <button onClick={handleNextQuestion} disabled={selectedOptionIndex === null}>
+      <button onClick={handleNextQuestion} disabled={!isAnswered}>
         Next Question
       </button>
     </div>
