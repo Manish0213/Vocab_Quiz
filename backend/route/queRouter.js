@@ -62,4 +62,10 @@ router.post('/create', async (req, res) => {
   }
 });
 
+router.get('/fetchvocab/:id', async (req, res) => {
+  const id = req.params.id;
+  const vacab = await Vocabulary.findOne({_id: id});
+  res.send(vacab);
+})
+
 module.exports = router;

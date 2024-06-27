@@ -1,5 +1,5 @@
 // src/Quiz.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const Quiz = () => {
   const [quizQuestions, setQuizQuestions] = useState([]);
@@ -8,13 +8,20 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
+  const [vocab, setVocab] = useState();
 
   useEffect(() => {
     // Fetch the quiz questions from the backend
-    fetch('http://localhost:5000/quiz/play') // Adjust the URL to match your backend endpoint
-      .then(response => response.json())
-      .then(data => setQuizQuestions(data));
+    fetch("http://localhost:5000/quiz/play") // Adjust the URL to match your backend endpoint
+      .then((response) => response.json())
+      .then((data) => setQuizQuestions(data));
   }, []);
+
+  const openModal = async (id) => {
+    const response = await fetch(`http://localhost:5000/quiz/fetchvocab/${id}`);
+    const data = await response.json();
+    setVocab(data);
+  }
 
   const handleOptionClick = (optionIndex) => {
     if (!isAnswered) {
@@ -45,8 +52,10 @@ const Quiz = () => {
   if (showResult) {
     return (
       <div>
-        <h2>Your Score: {score}/{quizQuestions.length}</h2>
-        <button onClick={() => window.location.reload()}>Restart Quiz</button>
+        <h2>
+          Your Score: {score}/{quizQuestions.length}
+        </h2>
+        <button onClick={() => window.location.reload()}>Play Again</button>
       </div>
     );
   }
@@ -54,40 +63,90 @@ const Quiz = () => {
   const currentQuestion = quizQuestions[currentQuestionIndex];
 
   return (
-    <div>
-      <h2>{currentQuestion.question}</h2>
-      <ul>
-        {currentQuestion.options.map((option, index) => (
-          <li key={option.id}>
-            <button
-              onClick={() => handleOptionClick(index)}
-              style={{
-                backgroundColor: isAnswered
-                  ? index === currentQuestion.correctIndex
-                    ? 'green'
-                    : index === selectedOptionIndex
-                    ? 'red'
-                    : 'white'
-                  : 'white',
-                color: isAnswered
-                  ? index === currentQuestion.correctIndex
-                    ? 'white'
-                    : index === selectedOptionIndex
-                    ? 'white'
-                    : 'black'
-                  : 'black',
-              }}
-              disabled={isAnswered}
-            >
-              {option.meaning}
-            </button>
-          </li>
-        ))}
-      </ul>
-      <button onClick={handleNextQuestion} disabled={!isAnswered}>
-        Next Question
-      </button>
-    </div>
+    <>
+      <div>
+        <h2>{currentQuestion.question}</h2>
+        <ul>
+          {currentQuestion.options.map((option, index) => (
+            <li key={option.id}>
+              <div
+                className="options"
+                onClick={() => handleOptionClick(index)}
+                style={{
+                  backgroundColor: isAnswered
+                    ? index === currentQuestion.correctIndex
+                      ? "green"
+                      : index === selectedOptionIndex
+                      ? "red"
+                      : "white"
+                    : "white",
+                  color: isAnswered
+                    ? index === currentQuestion.correctIndex
+                      ? "white"
+                      : index === selectedOptionIndex
+                      ? "white"
+                      : "black"
+                    : "black",
+                }}
+                disabled={isAnswered}
+              >
+                {option.meaning}
+                {isAnswered === true && (
+                  <i data-bs-toggle="modal" data-bs-target="#exampleModal" class="fa-solid fa-eye" onClick={() => openModal(option.id)}></i>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <button onClick={handleNextQuestion} disabled={!isAnswered}>
+          Next Question
+        </button>
+      </div>
+
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              {
+              vocab && (<>
+              <li>{vocab.vocab}</li>
+              <li>{vocab.meaning}</li>
+              </>)      
+              }
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
