@@ -9,6 +9,7 @@ connectToDatabase();
 
 app.use(express.json());
 app.use('/quiz', require('./route/queRouter'));
+app.use('/auth', require('./route/authRouter'));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

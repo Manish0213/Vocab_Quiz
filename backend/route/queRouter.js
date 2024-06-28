@@ -1,6 +1,7 @@
 const express = require('express');
 const Vocabulary = require('../model/vocabSchema');
 const router = express.Router();
+const fetchUser = require('../middleware/fetchUserMiddleware');
 
 // Helper function to shuffle array (for randomizing options)
 function shuffle(array) {
@@ -11,16 +12,16 @@ function shuffle(array) {
   return array;
 }
 
-router.get('/play', async (req, res) => {
+router.get('/play', fetchUser, async (req, res) => {
   try {
     // Fetch 10 random vocab words from MongoDB
-    const randomVocabs = await Vocabulary.aggregate([{ $sample: { size: 10 } }]);
-
+    const randomVocabs = await Vocabulary.aggregate([{ $match: { userId: req.user.id } }, { $sample: { size: 10 } }]);
+    console.log(randomVocabs);
     // Prepare an array to hold the quiz questions
     const quizQuestions = await Promise.all(randomVocabs.map(async (correctAnswer) => {
       // Fetch 3 more random vocab words for incorrect options
       const incorrectOptions = await Vocabulary.aggregate([
-        { $match: { _id: { $ne: correctAnswer._id } } }, // Exclude correct answer
+        { $match: { userId: req.user.id, _id: { $ne: correctAnswer._id } } }, // Exclude correct answer
         { $sample: { size: 3 } }
       ]);
 
@@ -50,10 +51,10 @@ router.get('/play', async (req, res) => {
   }
 });
 
-router.post('/create', async (req, res) => {
-  const { vocab, meaning } = req.body;
+router.post('/create', fetchUser, async (req, res) => {
+  const { vocab, meaning, sentence } = req.body;
   try {
-    let newVocab = new Vocabulary({ vocab, meaning });
+    let newVocab = new Vocabulary({ vocab, meaning, sentence, userId : req.user.id });
     newVocab = await newVocab.save();
     res.status(201).send(newVocab);
   } catch (err) {
@@ -68,8 +69,8 @@ router.get('/fetchvocab/:id', async (req, res) => {
   res.send(vacab);
 })
 
-router.get('/fetchallvocab', async (req, res) => {
-  const vocabs = await Vocabulary.find({});
+router.get('/fetchallvocab', fetchUser, async (req, res) => {
+  const vocabs = await Vocabulary.find({userId : req.user.id});
   res.send(vocabs);
 })
 

@@ -1,7 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  }
+
   return (
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
@@ -12,15 +20,26 @@ const Navbar = () => {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <Link class="nav-link active" aria-current="page" to="/">Home</Link>
         </li>
         <li class="nav-item">
           <Link class="nav-link" to="quiz">Play Quiz</Link>
         </li>
+        <li class="nav-item">
+          <Link class="nav-link" to="addvocabulary">Add Vocabulary</Link>
+        </li>
       </ul>
       <form class="d-flex" role="search">
-        <Link to='/login'><button class="btn btn-outline-success" type="submit">Login</button></Link>
+      {localStorage.getItem('token') === null ?
+        (
+        <>
+        <Link to='/login'><button class="btn btn-outline-success mx-2" type="submit">Login</button></Link>
         <Link to='/signup'><button class="btn btn-outline-success" type="submit">Sign Up</button></Link>
+        </>
+        ) : (
+          <><button class="btn btn-outline-success" onClick={handleLogout} type="submit">Logout</button></>
+        )
+      }
       </form>
     </div>
   </div>

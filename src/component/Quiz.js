@@ -1,7 +1,9 @@
 // src/Quiz.js
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Quiz = () => {
+  const navigate = useNavigate();
   const [quizQuestions, setQuizQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
@@ -11,11 +13,24 @@ const Quiz = () => {
   const [vocab, setVocab] = useState();
 
   useEffect(() => {
+    if(!localStorage.getItem('token')){
+      navigate('/login');
+    } else {
+      fetchQuiz();
+    }
+  }, []);
+
+  const fetchQuiz = () => {
     // Fetch the quiz questions from the backend
-    fetch("http://localhost:5000/quiz/play") // Adjust the URL to match your backend endpoint
+    fetch("http://localhost:5000/quiz/play",{
+      method: 'GET',
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    }) // Adjust the URL to match your backend endpoint
       .then((response) => response.json())
       .then((data) => setQuizQuestions(data));
-  }, []);
+  }
 
   const openModal = async (id) => {
     const response = await fetch(`http://localhost:5000/quiz/fetchvocab/${id}`);
@@ -51,11 +66,11 @@ const Quiz = () => {
 
   if (showResult) {
     return (
-      <div>
+      <div className="container my-3">
         <h2>
           Your Score: {score}/{quizQuestions.length}
         </h2>
-        <button onClick={() => window.location.reload()}>Play Again</button>
+        <button className="quizBtn" onClick={() => window.location.reload()}>Play Again</button>
       </div>
     );
   }
@@ -98,7 +113,7 @@ const Quiz = () => {
             </li>
           ))}
         </ul>
-        <button onClick={handleNextQuestion} disabled={!isAnswered}>
+        <button className="quizBtn" onClick={handleNextQuestion} disabled={!isAnswered}>
           Next
         </button>
       </div>
@@ -126,8 +141,9 @@ const Quiz = () => {
             <div class="modal-body">
               {
               vocab && (<>
-              <li>{vocab.vocab}</li>
-              <li>{vocab.meaning}</li>
+              <li>Vocab: {vocab.vocab}</li>
+              <li>Meaning: {vocab.meaning}</li>
+              <li>Example Sentence: {vocab.sentence}</li>
               </>)      
               }
             </div>
