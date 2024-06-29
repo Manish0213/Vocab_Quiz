@@ -1,6 +1,7 @@
 // src/Quiz.js
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -11,10 +12,11 @@ const Quiz = () => {
   const [showResult, setShowResult] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
   const [vocab, setVocab] = useState();
+  const [fullView, setFullView] = useState(false);
 
   useEffect(() => {
-    if(!localStorage.getItem('token')){
-      navigate('/login');
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
     } else {
       fetchQuiz();
     }
@@ -22,21 +24,22 @@ const Quiz = () => {
 
   const fetchQuiz = () => {
     // Fetch the quiz questions from the backend
-    fetch("http://localhost:5000/quiz/play",{
-      method: 'GET',
+    fetch("http://localhost:5000/quiz/play", {
+      method: "GET",
       headers: {
-        token: localStorage.getItem('token')
-      }
+        token: localStorage.getItem("token"),
+      },
     }) // Adjust the URL to match your backend endpoint
       .then((response) => response.json())
       .then((data) => setQuizQuestions(data));
-  }
+  };
 
   const openModal = async (id) => {
+    setFullView(false);
     const response = await fetch(`http://localhost:5000/quiz/fetchvocab/${id}`);
     const data = await response.json();
     setVocab(data);
-  }
+  };
 
   const handleOptionClick = (optionIndex) => {
     if (!isAnswered) {
@@ -70,7 +73,9 @@ const Quiz = () => {
         <h2>
           Your Score: {score}/{quizQuestions.length}
         </h2>
-        <button className="quizBtn" onClick={() => window.location.reload()}>Play Again</button>
+        <button className="quizBtn" onClick={() => window.location.reload()}>
+          Play Again
+        </button>
       </div>
     );
   }
@@ -107,13 +112,22 @@ const Quiz = () => {
               >
                 {option.meaning}
                 {isAnswered === true && (
-                  <i data-bs-toggle="modal" data-bs-target="#exampleModal" class="fa-solid fa-eye" onClick={() => openModal(option.id)}></i>
+                  <i
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    class="fa-solid fa-eye"
+                    onClick={() => openModal(option.id)}
+                  ></i>
                 )}
               </div>
             </li>
           ))}
         </ul>
-        <button className="quizBtn" onClick={handleNextQuestion} disabled={!isAnswered}>
+        <button
+          className="quizBtn"
+          onClick={handleNextQuestion}
+          disabled={!isAnswered}
+        >
           Next
         </button>
       </div>
@@ -139,15 +153,24 @@ const Quiz = () => {
               ></button>
             </div>
             <div class="modal-body">
-              {
-              vocab && (<>
-              <li>Vocab: {vocab.vocab}</li>
-              <li>Meaning: {vocab.meaning}</li>
-              <li>Example Sentence: {vocab.sentence}</li>
-              </>)      
-              }
+              {vocab && (
+                <ul>
+                  <li>Vocab: {vocab.vocab}</li>
+                  <hr/>
+                  <li>Meaning: {vocab.meaning}</li>
+                  <hr/>
+                  <li>Example Sentence: {vocab.sentence}</li>
+                  <hr/>
+                  {
+                    fullView === true && <li>Description: {vocab.description}</li>
+                  }
+                </ul>
+              )}
             </div>
-            {/* close and update button to be added */}
+            <div class="modal-footer" style={{fontSize: "30px"}}>
+              {/* <button type="button" class="btn btn-success mx-2">View</button> */}
+              <i className={`fa-solid ${fullView ? 'fa-minus' : 'fa-plus'}`} onClick={() => setFullView(!fullView)}></i>
+            </div>
           </div>
         </div>
       </div>

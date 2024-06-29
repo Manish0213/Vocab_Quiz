@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = "I M SECRET";
+const mongoose = require('mongoose');
 
 const fetchUser = async (req,res,next) => {
     const {token} = req.headers;

@@ -69,7 +69,7 @@ li {
 }
 
 .vocab-list .vocab {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 22px;
 }
 
@@ -115,4 +115,23 @@ li {
 
 .search-button:hover {
   background: #eee;
+}
+
+/* View Component CSS */
+.view-container {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.view-container span {
+  font-size: 22px;
+}
+
+.view-nav {
+  display: flex;
+  justify-content: end;
+  gap: 22px;
+  font-size: 30px;
 }

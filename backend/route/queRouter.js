@@ -12,11 +12,13 @@ function shuffle(array) {
   return array;
 }
 
+// { $match: { userId: req.user.id } }, 
 router.get('/play', fetchUser, async (req, res) => {
+  console.log(req.user.id);
   try {
     // Fetch 10 random vocab words from MongoDB
     const randomVocabs = await Vocabulary.aggregate([{ $match: { userId: req.user.id } }, { $sample: { size: 10 } }]);
-    console.log(randomVocabs);
+
     // Prepare an array to hold the quiz questions
     const quizQuestions = await Promise.all(randomVocabs.map(async (correctAnswer) => {
       // Fetch 3 more random vocab words for incorrect options
@@ -52,9 +54,9 @@ router.get('/play', fetchUser, async (req, res) => {
 });
 
 router.post('/create', fetchUser, async (req, res) => {
-  const { vocab, meaning, sentence } = req.body;
+  const { vocab, meaning, sentence, description } = req.body;
   try {
-    let newVocab = new Vocabulary({ vocab, meaning, sentence, userId : req.user.id });
+    let newVocab = new Vocabulary({ vocab, meaning, sentence, description, userId : req.user.id });
     newVocab = await newVocab.save();
     res.status(201).send(newVocab);
   } catch (err) {
@@ -72,6 +74,24 @@ router.get('/fetchvocab/:id', async (req, res) => {
 router.get('/fetchallvocab', fetchUser, async (req, res) => {
   const vocabs = await Vocabulary.find({userId : req.user.id});
   res.send(vocabs);
+})
+
+router.put('/updatevocab/:id', fetchUser, async (req, res) => {
+  const vocabId = req.params.id;
+  const { vocab, meaning, sentence, description } = req.body;
+  try {
+    const updatedVocab = await Vocabulary.updateOne({ _id: vocabId }, { $set: { vocab, meaning, sentence, description } }, { upsert: true });
+    res.status(201).send(updatedVocab);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.delete('/deletevocab/:id', async (req,res) => {
+  const delId = req.params.id;
+  const deletedNote = await Vocabulary.findOneAndDelete({ _id: delId })
+  res.send(deletedNote);
 })
 
 module.exports = router;

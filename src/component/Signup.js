@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = ({showAlert}) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -28,15 +28,17 @@ const Signup = () => {
 
     if(data.success === true){
       localStorage.setItem('token', data.authToken);
+      showAlert("Account Created Successfully!","success");
       navigate('/');
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        cPassword: ""
+      });
+    } else {
+      showAlert("Invlid Crediantials!","danger");
     }
-
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      cPassword: ""
-    });
   };
 
   return (

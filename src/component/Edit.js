@@ -1,44 +1,51 @@
-import React, { useState,useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const AddVocab = ({showAlert}) => {
-    const navigate = useNavigate();
+const Edit = ({showAlert}) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     vocab: "",
     meaning: "",
     sentence: "",
-    description: ""
+    description: "",
   });
 
+  const getVocab = async () => {
+    const response = await fetch(`http://localhost:5000/quiz/fetchvocab/${id}`);
+    const data = await response.json();
+    setFormData({
+      vocab: data.vocab,
+      meaning: data.meaning,
+      sentence: data.sentence,
+      description: data.description,
+    });
+  };
+
   useEffect(() => {
-    if(!localStorage.getItem('token')){
-      navigate('/login');
-    }
-  }, []);
+    getVocab();
+  }, [id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const response = await fetch(`http://localhost:5000/quiz/create`,{
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            token: localStorage.getItem('token')
-        },
-        body: JSON.stringify(formData)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch(`http://localhost:5000/quiz/updatevocab/${id}`, {
+      method: 'PUT',
+      headers: {
+        "content-type": "application/json",
+        token: localStorage.getItem("token")
+      },
+      body: JSON.stringify(formData)
     });
-    await response.json();
-    showAlert("Vocabulary Added Successfully!", "success");
-    setFormData({
-      vocab: "",
-      meaning: "",
-      sentence: "",
-      description: "",
-    });
+    const data = await response.json();
+    console.log(data);
+    showAlert("Vocabulary Updated Successfully!", "success")
+    navigate(`/view/${id}`);
   };
 
   return (
@@ -53,8 +60,8 @@ const AddVocab = ({showAlert}) => {
             class="form-control"
             id="vocab"
             name="vocab"
-            value={formData.vocab}
             onChange={handleChange}
+            value={formData.vocab}
           />
         </div>
         <div class="mb-3">
@@ -66,44 +73,44 @@ const AddVocab = ({showAlert}) => {
             class="form-control"
             id="meaning"
             name="meaning"
-            value={formData.meaning}
             onChange={handleChange}
+            value={formData.meaning}
           />
         </div>
         <div class="mb-3">
           <label for="sentence" class="form-label">
-            Example Sentences
+            Example sentence
           </label>
           <textarea
             type="text"
             class="form-control"
             id="sentence"
-            rows="3"
+            rows= "3"
             name="sentence"
-            value={formData.sentence}
             onChange={handleChange}
+            value={formData.sentence}
           />
         </div>
         <div class="mb-3">
-          <label for="description" class="form-label">
+          <label for="sentence" class="form-label">
             Description
           </label>
           <textarea
             type="text"
             class="form-control"
             id="description"
-            rows="5"
+            rows= "5"
             name="description"
-            value={formData.description}
             onChange={handleChange}
+            value={formData.description}
           />
         </div>
         <button type="submit" class="btn btn-primary">
-          Submit
+          Update
         </button>
       </form>
     </div>
   );
 };
 
-export default AddVocab;
+export default Edit;

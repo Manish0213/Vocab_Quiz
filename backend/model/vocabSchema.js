@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const User = require('./authSchema');
+// const User = require('./authSchema');
 
 const vacabSchema = new Schema({
     vocab: {
@@ -15,9 +15,14 @@ const vacabSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: User
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: User
+        type: String,
     }
 })
 
