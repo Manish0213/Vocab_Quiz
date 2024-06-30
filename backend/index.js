@@ -8,6 +8,9 @@ app.use(cors());
 connectToDatabase();
 
 app.use(express.json());
+app.get('/', (req, res) => {
+  res.send("Hello Vercel");
+})
 app.use('/quiz', require('./route/queRouter'));
 app.use('/auth', require('./route/authRouter'));
 
