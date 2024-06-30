@@ -11,7 +11,7 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [vocab, setVocab] = useState();
+  const [vocab, setVocab] = useState({ vocab: "", meaning: "", sentence: "", description: "" });
   const [fullView, setFullView] = useState(false);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Quiz = () => {
 
   const openModal = async (id) => {
     setFullView(false);
-    setVocab();
+    setVocab({ vocab: "", meaning: "", sentence: "", description: "" });
     const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/fetchvocab/${id}`);
     const data = await response.json();
     setVocab(data);
