@@ -4,7 +4,11 @@ const app = express()
 const port = 5000;
 const connectToDatabase = require('./db');
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://deploy-mern-1whq.vercel.app', 
+  methods: ['GET','PUT','POST','DELETE'],
+  credentials: true,
+}));
 connectToDatabase();
 
 app.use(express.json());
