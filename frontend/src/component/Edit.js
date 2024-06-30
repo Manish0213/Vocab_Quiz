@@ -13,7 +13,7 @@ const Edit = ({showAlert}) => {
   });
 
   const getVocab = async () => {
-    const response = await fetch(`http://localhost:5000/quiz/fetchvocab/${id}`);
+    const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/fetchvocab/${id}`);
     const data = await response.json();
     setFormData({
       vocab: data.vocab,
@@ -34,7 +34,7 @@ const Edit = ({showAlert}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`http://localhost:5000/quiz/updatevocab/${id}`, {
+    const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/updatevocab/${id}`, {
       method: 'PUT',
       headers: {
         "content-type": "application/json",

@@ -17,7 +17,7 @@ const Signup = ({showAlert}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch(`https://vocab-quiz-frontend.vercel.app/auth/signup`,{
+    const response = await fetch(`https://vocab-quiz-api.vercel.app/auth/signup`,{
         method: 'POST',
         headers: {
             'content-type': 'application/json',

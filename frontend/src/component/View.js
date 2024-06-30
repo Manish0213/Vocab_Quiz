@@ -8,7 +8,7 @@ const View = ({showAlert}) => {
   const [vocab, setVocab] = useState({});
 
   const getVocab = async () => {
-    const response = await fetch(`http://localhost:5000/quiz/fetchvocab/${id}`);
+    const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/fetchvocab/${id}`);
     const data = await response.json();
     setVocab(data);
   };
