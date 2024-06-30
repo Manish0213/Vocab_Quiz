@@ -30,7 +30,7 @@ const View = ({showAlert}) => {
       }
     );
     const data = await response.json();
-    showAlert("Vocabulary Deleted Successfully!");
+    showAlert("Vocabulary Deleted Successfully!", "success");
     navigate('/');
   };
 
