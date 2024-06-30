@@ -36,6 +36,7 @@ const Quiz = () => {
 
   const openModal = async (id) => {
     setFullView(false);
+    setVocab();
     const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/fetchvocab/${id}`);
     const data = await response.json();
     setVocab(data);
