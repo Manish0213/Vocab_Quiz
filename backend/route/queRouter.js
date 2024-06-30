@@ -14,7 +14,7 @@ function shuffle(array) {
 
 // { $match: { userId: req.user.id } }, 
 router.get('/play', fetchUser, async (req, res) => {
-  console.log(req.user.id);
+  // console.log(req.user.id);
   try {
     // Fetch 10 random vocab words from MongoDB
     const randomVocabs = await Vocabulary.aggregate([{ $match: { userId: req.user.id } }, { $sample: { size: 10 } }]);

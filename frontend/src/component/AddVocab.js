@@ -43,6 +43,7 @@ const AddVocab = ({showAlert}) => {
 
   return (
     <div className="container my-3">
+    <h2 className="mb-4">Add Vocabulary</h2>
       <form onSubmit={handleSubmit}>
         <div class="mb-3">
           <label for="vocab" class="form-label">
