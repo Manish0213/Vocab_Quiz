@@ -5,7 +5,7 @@ const port = 5000;
 const connectToDatabase = require('./db');
 
 app.use(cors({
-  origin: 'https://deploy-mern-1whq.vercel.app', 
+  origin: 'https://vocab-quiz-frontend.vercel.app', 
   methods: ['GET','PUT','POST','DELETE'],
   credentials: true,
 }));
