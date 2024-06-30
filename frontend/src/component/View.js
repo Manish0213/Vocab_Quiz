@@ -24,7 +24,7 @@ const View = ({showAlert}) => {
   const handleDelete = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      `http://localhost:5000/quiz/deletevocab/${id}`,
+      `https://vocab-quiz-api.vercel.app/quiz/deletevocab/${id}`,
       {
         method: "DELETE",
       }
