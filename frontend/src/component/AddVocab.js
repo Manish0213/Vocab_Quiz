@@ -23,7 +23,7 @@ const AddVocab = ({showAlert}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/create`,{
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/quiz/create`,{
         method: 'POST',
         headers: {
             'content-type': 'application/json',

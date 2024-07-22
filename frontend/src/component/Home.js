@@ -8,7 +8,7 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const fetchAllVocab = async () => {
-    const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/fetchallvocab`,{
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/quiz/fetchallvocab`,{
       method: 'GET',
       headers: {
         token: localStorage.getItem('token')

@@ -8,7 +8,7 @@ const View = ({showAlert}) => {
   const [vocab, setVocab] = useState({});
 
   const getVocab = async () => {
-    const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/fetchvocab/${id}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/quiz/fetchvocab/${id}`);
     const data = await response.json();
     setVocab(data);
   };
@@ -24,7 +24,7 @@ const View = ({showAlert}) => {
   const handleDelete = async (e) => {
     e.preventDefault();
     const response = await fetch(
-      `https://vocab-quiz-api.vercel.app/quiz/deletevocab/${id}`,
+      `${process.env.REACT_APP_API_URL}/quiz/deletevocab/${id}`,
       {
         method: "DELETE",
       }

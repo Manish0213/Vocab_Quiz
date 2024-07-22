@@ -24,7 +24,7 @@ const Quiz = () => {
 
   const fetchQuiz = () => {
     // Fetch the quiz questions from the backend
-    fetch("https://vocab-quiz-api.vercel.app/quiz/play", {
+    fetch(`${process.env.REACT_APP_API_URL}/quiz/play`, {
       method: "GET",
       headers: {
         token: localStorage.getItem("token"),
@@ -37,7 +37,7 @@ const Quiz = () => {
   const openModal = async (id) => {
     setFullView(false);
     setVocab({ vocab: "", meaning: "", sentence: "", description: "" });
-    const response = await fetch(`https://vocab-quiz-api.vercel.app/quiz/fetchvocab/${id}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/quiz/fetchvocab/${id}`);
     const data = await response.json();
     setVocab(data);
   };
