@@ -1,7 +1,9 @@
 // src/Quiz.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+
+import correctSound from '../sound/correctSound.mp3';
+import incorrectSound from '../sound/incorrectSound.mp3';
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -13,6 +15,10 @@ const Quiz = () => {
   const [isAnswered, setIsAnswered] = useState(false);
   const [vocab, setVocab] = useState({ vocab: "", meaning: "", sentence: "", description: "" });
   const [fullView, setFullView] = useState(false);
+
+  // Audio references
+  const correctAudioRef = useRef(new Audio(correctSound));
+  const incorrectAudioRef = useRef(new Audio(incorrectSound));
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -49,8 +55,16 @@ const Quiz = () => {
 
       if (optionIndex === quizQuestions[currentQuestionIndex].correctIndex) {
         setScore(score + 1);
+        playSound(correctAudioRef);
+      } else {
+        playSound(incorrectAudioRef);
       }
     }
+  };
+
+  const playSound = (audioRef) => {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play();
   };
 
   const handleNextQuestion = () => {
@@ -86,7 +100,7 @@ const Quiz = () => {
   return (
     <>
       <div className="quiz-container">
-        <h2>{currentQuestion.question}</h2>
+        <h2 className="mx-2">{`${currentQuestionIndex + 1}. ${currentQuestion.question}`}</h2>
         <ul>
           {currentQuestion.options.map((option, index) => (
             <li key={option.id}>

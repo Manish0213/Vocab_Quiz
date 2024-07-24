@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deleteVocab } from "../app/features/vocab/vocabslice";
 
 const View = ({showAlert}) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [vocab, setVocab] = useState({});
 
   const getVocab = async () => {
@@ -23,13 +27,7 @@ const View = ({showAlert}) => {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/quiz/deletevocab/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-    const data = await response.json();
+    dispatch(deleteVocab(id));
     showAlert("Vocabulary Deleted Successfully!", "success");
     navigate('/');
   };

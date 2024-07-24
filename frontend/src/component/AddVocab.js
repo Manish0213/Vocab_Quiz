@@ -1,18 +1,22 @@
-import React, { useState,useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addVocab } from "../app/features/vocab/vocabslice";
 
-const AddVocab = ({showAlert}) => {
-    const navigate = useNavigate();
+const AddVocab = ({ showAlert }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     vocab: "",
     meaning: "",
     sentence: "",
-    description: ""
+    description: "",
   });
 
   useEffect(() => {
-    if(!localStorage.getItem('token')){
-      navigate('/login');
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
     }
   }, []);
 
@@ -23,15 +27,7 @@ const AddVocab = ({showAlert}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/quiz/create`,{
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-            token: localStorage.getItem('token')
-        },
-        body: JSON.stringify(formData)
-    });
-    await response.json();
+    dispatch(addVocab(formData));
     showAlert("Vocabulary Added Successfully!", "success");
     setFormData({
       vocab: "",
@@ -43,7 +39,7 @@ const AddVocab = ({showAlert}) => {
 
   return (
     <div className="container my-3">
-    <h2 className="mb-4">Add Vocabulary</h2>
+      <h2 className="mb-4">Add Vocabulary</h2>
       <form onSubmit={handleSubmit}>
         <div class="mb-3">
           <label for="vocab" class="form-label">
@@ -56,6 +52,7 @@ const AddVocab = ({showAlert}) => {
             name="vocab"
             value={formData.vocab}
             onChange={handleChange}
+            required
           />
         </div>
         <div class="mb-3">
@@ -69,6 +66,7 @@ const AddVocab = ({showAlert}) => {
             name="meaning"
             value={formData.meaning}
             onChange={handleChange}
+            required
           />
         </div>
         <div class="mb-3">
@@ -83,6 +81,7 @@ const AddVocab = ({showAlert}) => {
             name="sentence"
             value={formData.sentence}
             onChange={handleChange}
+            required
           />
         </div>
         <div class="mb-3">
@@ -97,6 +96,7 @@ const AddVocab = ({showAlert}) => {
             name="description"
             value={formData.description}
             onChange={handleChange}
+            required
           />
         </div>
         <button type="submit" class="btn btn-primary">

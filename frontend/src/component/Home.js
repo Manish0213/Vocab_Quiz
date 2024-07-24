@@ -1,32 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchAllVocab } from "../app/features/vocab/vocabslice";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [vocabs, setVocabs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const fetchAllVocab = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/quiz/fetchallvocab`,{
-      method: 'GET',
-      headers: {
-        token: localStorage.getItem('token')
-      }
-    });
-    const data = await response.json();
-    setVocabs(data);
-    console.log(data);
-  };
+  const dispatch = useDispatch();
+  const vocabs = useSelector( (state) => state.vocab.vocabs);
 
   useEffect(() => {
     if(!localStorage.getItem('token')){
       navigate('/login');
     }
     else{
-      fetchAllVocab();
+      dispatch(fetchAllVocab());
     }
-  }, []);
+  }, [dispatch]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
