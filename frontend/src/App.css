@@ -64,7 +64,7 @@ li {
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
   border-radius: 5px;
-  line-height: 0.8;
+  line-height: 1;
 }
 
 .vocab-list .vocab {
