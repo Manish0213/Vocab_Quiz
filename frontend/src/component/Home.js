@@ -7,9 +7,11 @@ import { fetchAllVocab } from "../app/features/vocab/vocabslice";
 const Home = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [vocabs, setVocabs] = useState(null);
 
   const dispatch = useDispatch();
-  const vocabs = useSelector( (state) => state.vocab.vocabs);
+  // const vocabs = useSelector( (state) => state.vocab.vocabs);
+  setVocabs(useSelector( (state) => state.vocab.vocabs));
 
   useEffect(() => {
     if(!localStorage.getItem('token')){
@@ -29,7 +31,7 @@ const Home = () => {
     vocab.meaning.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (vocabs === undefined) {
+  if (vocabs === null) {
     return (
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
