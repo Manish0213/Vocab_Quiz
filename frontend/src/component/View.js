@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteVocab } from "../app/features/vocab/vocabslice";
 
-const View = ({showAlert}) => {
+const View = ({ showAlert }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -12,7 +12,9 @@ const View = ({showAlert}) => {
   const [vocab, setVocab] = useState({});
 
   const getVocab = async () => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/quiz/fetchvocab/${id}`);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/quiz/fetchvocab/${id}`
+    );
     const data = await response.json();
     setVocab(data);
   };
@@ -22,29 +24,36 @@ const View = ({showAlert}) => {
   }, [id]);
 
   if (Object.keys(vocab).length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    );
   }
 
   const handleDelete = async (e) => {
     e.preventDefault();
     dispatch(deleteVocab(id));
     showAlert("Vocabulary Deleted Successfully!", "success");
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <>
       <div className="view-container">
         <div className="view-nav">
-          <Link to={`/edit/${id}`} style={{ textDecoration: 'none', color: 'black' }}>
+          <Link
+            to={`/edit/${id}`}
+            style={{ textDecoration: "none", color: "black" }}
+          >
             <i class="fa-solid fa-pen-to-square"></i>
           </Link>
-          <Link style={{ textDecoration: 'none', color: 'black' }}>
-          <i
-            class="fa-solid fa-trash"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          ></i>
+          <Link style={{ textDecoration: "none", color: "black" }}>
+            <i
+              class="fa-solid fa-trash"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            ></i>
           </Link>
         </div>
         <hr />
