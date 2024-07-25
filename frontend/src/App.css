@@ -137,11 +137,8 @@ li {
 }
 
 .spinner-border {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
+  margin-top: 50%;
+  margin-left: 50%;
   width: 4rem; /* Set the desired width */
   height: 4rem; /* Match the height to maintain a circular shape */
   border-width: 0.5em;

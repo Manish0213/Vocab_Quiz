@@ -29,6 +29,14 @@ const Home = () => {
     vocab.meaning.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (vocabs.length === 0) {
+    return (
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="vocab-container my-3">
