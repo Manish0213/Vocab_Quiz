@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllVocab } from "../app/features/vocab/vocabslice";
@@ -7,18 +7,16 @@ import { fetchAllVocab } from "../app/features/vocab/vocabslice";
 const Home = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [vocabs, setVocabs] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
-  // const vocabs = useSelector( (state) => state.vocab.vocabs);
-  setVocabs(useSelector( (state) => state.vocab.vocabs));
+  const vocabs = useSelector((state) => state.vocab.vocabs);
 
   useEffect(() => {
-    if(!localStorage.getItem('token')){
-      navigate('/login');
-    }
-    else{
-      dispatch(fetchAllVocab());
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    } else {
+      dispatch(fetchAllVocab()).then(() => setLoading(false));
     }
   }, [dispatch]);
 
@@ -26,18 +24,11 @@ const Home = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredVocabs = vocabs.filter((vocab) =>
-    vocab.vocab.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    vocab.meaning.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredVocabs = vocabs.filter(
+    (vocab) =>
+      vocab.vocab.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vocab.meaning.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  if (vocabs === null) {
-    return (
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -52,13 +43,20 @@ const Home = () => {
           />
           <button class="search-button">🔍</button>
         </div>
-        {filteredVocabs.length > 0 ? (
+        {loading ? (
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        ) : filteredVocabs.length > 0 ? (
           filteredVocabs.map((vocab) => (
-            <Link to={`/view/${vocab._id}`} style={{ textDecoration: 'none', color: 'black' }}>
-            <div className="vocab-list" key={vocab._id}>
-              <p className="vocab">{vocab.vocab}</p>
-              <p className="meaning">{vocab.meaning}</p>
-            </div>
+            <Link
+              to={`/view/${vocab._id}`}
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <div className="vocab-list" key={vocab._id}>
+                <p className="vocab">{vocab.vocab}</p>
+                <p className="meaning">{vocab.meaning}</p>
+              </div>
             </Link>
           ))
         ) : (
