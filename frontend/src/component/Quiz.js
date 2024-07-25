@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import correctSound from '../sound/correctSound.mp3';
-import incorrectSound from '../sound/incorrectSound.wav';
+import correctSound from "../sound/correctSound.mp3";
+import incorrectSound from "../sound/incorrectSound.wav";
 
 const Quiz = () => {
   const navigate = useNavigate();
@@ -13,7 +13,12 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [vocab, setVocab] = useState({ vocab: "", meaning: "", sentence: "", description: "" });
+  const [vocab, setVocab] = useState({
+    vocab: "",
+    meaning: "",
+    sentence: "",
+    description: "",
+  });
   const [fullView, setFullView] = useState(false);
 
   // Audio references
@@ -43,7 +48,9 @@ const Quiz = () => {
   const openModal = async (id) => {
     setFullView(false);
     setVocab({ vocab: "", meaning: "", sentence: "", description: "" });
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/quiz/fetchvocab/${id}`);
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/quiz/fetchvocab/${id}`
+    );
     const data = await response.json();
     setVocab(data);
   };
@@ -78,8 +85,22 @@ const Quiz = () => {
     }
   };
 
+  const resetQuiz = () => {
+    setQuizQuestions([]); //this is added by me to set again new quiz questions
+    setCurrentQuestionIndex(0);
+    setSelectedOptionIndex(null);
+    setScore(0);
+    setShowResult(false);
+    setIsAnswered(false);
+    fetchQuiz(); //this is added by me to set again new quiz questions
+  };
+
   if (quizQuestions.length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    );
   }
 
   if (showResult) {
@@ -88,7 +109,7 @@ const Quiz = () => {
         <h2>
           Your Score: {score}/{quizQuestions.length}
         </h2>
-        <button className="quizBtn" onClick={() => window.location.reload()}>
+        <button className="quizBtn" onClick={resetQuiz}>
           Play Again
         </button>
       </div>
@@ -100,7 +121,9 @@ const Quiz = () => {
   return (
     <>
       <div className="quiz-container">
-        <h2 className="mx-2">{`${currentQuestionIndex + 1}. ${currentQuestion.question}`}</h2>
+        <h2 className="mx-2">{`${currentQuestionIndex + 1}. ${
+          currentQuestion.question
+        }`}</h2>
         <ul>
           {currentQuestion.options.map((option, index) => (
             <li key={option.id}>
@@ -171,20 +194,23 @@ const Quiz = () => {
               {vocab && (
                 <ul>
                   <li>Vocab: {vocab.vocab}</li>
-                  <hr/>
+                  <hr />
                   <li>Meaning: {vocab.meaning}</li>
-                  <hr/>
+                  <hr />
                   <li>Example Sentence: {vocab.sentence}</li>
-                  <hr/>
-                  {
-                    fullView === true && <li>Description: {vocab.description}</li>
-                  }
+                  <hr />
+                  {fullView === true && (
+                    <li>Description: {vocab.description}</li>
+                  )}
                 </ul>
               )}
             </div>
-            <div class="modal-footer" style={{fontSize: "30px"}}>
+            <div class="modal-footer" style={{ fontSize: "30px" }}>
               {/* <button type="button" class="btn btn-success mx-2">View</button> */}
-              <i className={`fa-solid ${fullView ? 'fa-minus' : 'fa-plus'}`} onClick={() => setFullView(!fullView)}></i>
+              <i
+                className={`fa-solid ${fullView ? "fa-minus" : "fa-plus"}`}
+                onClick={() => setFullView(!fullView)}
+              ></i>
             </div>
           </div>
         </div>
