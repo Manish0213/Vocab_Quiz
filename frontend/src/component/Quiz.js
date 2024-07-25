@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import correctSound from '../sound/correctSound.mp3';
-import incorrectSound from '../sound/incorrectSound.mp3';
+import incorrectSound from '../sound/incorrectSound.wav';
 
 const Quiz = () => {
   const navigate = useNavigate();
