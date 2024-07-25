@@ -138,7 +138,7 @@ li {
 
 .spinner-border {
   margin-top: 50%;
-  margin-left: 50%;
+  margin-left: 40%;
   width: 4rem; /* Set the desired width */
   height: 4rem; /* Match the height to maintain a circular shape */
   border-width: 0.5em;

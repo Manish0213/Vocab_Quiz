@@ -29,7 +29,7 @@ const Home = () => {
     vocab.meaning.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (vocabs.length === 0) {
+  if (vocabs === undefined) {
     return (
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
