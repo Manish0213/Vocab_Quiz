@@ -1,11 +1,15 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../app/features/auth/authslice";
 
-const Login = ({showAlert}) => {
+const Login = ({ showAlert }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleChange = (event) => {
@@ -15,29 +19,21 @@ const Login = ({showAlert}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`,{
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    });
-    const data = await response.json();
-    if(data.success === true) {
-      localStorage.setItem('token', data.authToken);
-      showAlert("Login Successfully!","success");
-      navigate('/');
-    }
-    else {
-      showAlert("Invlid Crediantials!","danger");
+    const authUser = await dispatch(loginUser(formData)).unwrap();
+    if(authUser.success === true){
+      localStorage.setItem("token", authUser.authToken);
+      showAlert("Login Successfully!", "success");
+      navigate("/");
+    } else {
+      showAlert("Invalid Credentials!", "danger");
     }
     setFormData({
       email: "",
-      password: ""
+      password: "",
     });
   };
-  
+
+
   return (
     <div class="container my-3">
       <h2 className="mb-4">Login Your Account</h2>

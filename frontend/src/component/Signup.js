@@ -1,8 +1,12 @@
 import React, {useState} from 'react'
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { signupUser } from '../app/features/auth/authslice';
 
 const Signup = ({showAlert}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,17 +21,10 @@ const Signup = ({showAlert}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/signup`,{
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    });
-    const data = await response.json();
+    const authUser = await dispatch(signupUser(formData)).unwrap();
 
-    if(data.success === true){
-      localStorage.setItem('token', data.authToken);
+    if(authUser.success === true){
+      localStorage.setItem('token', authUser.authToken);
       showAlert("Account Created Successfully!","success");
       navigate('/');
       setFormData({
