@@ -136,8 +136,8 @@ const Quiz = () => {
                       ? "rgba(72, 175, 77, 0.877)"
                       : index === selectedOptionIndex
                       ? "rgba(199, 63, 63, 0.945)"
-                      : "white"
-                    : "white",
+                      : ""
+                    : "",
                   color: isAnswered
                     ? index === currentQuestion.correctIndex
                       ? "white"
