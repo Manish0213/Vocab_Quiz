@@ -22,12 +22,9 @@ const Navbar = () => {
         <li class="nav-item">
           <Link class="nav-link active" aria-current="page" to="/">Home</Link>
         </li>
-        {/* <li class="nav-item">
-          <Link class="nav-link" to="quiz">Play Quiz</Link>
-        </li>
         <li class="nav-item">
-          <Link class="nav-link" to="addvocabulary">Add Vocabulary</Link>
-        </li> */}
+          <Link class="nav-link" aria-current="page" to="quiz">Quiz</Link>
+        </li>
       </ul>
       <form class="d-flex" role="search">
       {localStorage.getItem('token') === null ?

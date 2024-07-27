@@ -140,14 +140,16 @@ li {
   font-size: 30px;
 }
 
+/* loading spinner CSS */
 .spinner-border {
   margin-top: 50%;
-  margin-left: 40%;
-  width: 4rem; /* Set the desired width */
-  height: 4rem; /* Match the height to maintain a circular shape */
+  margin-left: 45%;
+  width: 4rem; 
+  height: 4rem;
   border-width: 0.5em;
 }
 
+/* link button css */
 .link-btn-container {
   position: absolute;
   bottom: 15px;
