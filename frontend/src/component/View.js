@@ -33,7 +33,7 @@ const View = ({ showAlert }) => {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    dispatch(deleteVocab(id));
+    await dispatch(deleteVocab(id)).unwrap();
     showAlert("Vocabulary Deleted Successfully!", "success");
     navigate("/");
   };

@@ -39,7 +39,7 @@ const Edit = ({showAlert}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateVocab(formData));
+    await dispatch(updateVocab(formData)).unwrap();
     showAlert("Vocabulary Updated Successfully!", "success")
     navigate(`/view/${id}`);
   };

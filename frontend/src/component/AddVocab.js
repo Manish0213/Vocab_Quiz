@@ -27,7 +27,7 @@ const AddVocab = ({ showAlert }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(addVocab(formData));
+    await dispatch(addVocab(formData)).unwrap();
     showAlert("Vocabulary Added Successfully!", "success");
     setFormData({
       vocab: "",
