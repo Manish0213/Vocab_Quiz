@@ -50,6 +50,11 @@ li {
   margin: 10px 0;
 }
 
+.home-container {
+  /* border: 2px solid black; */
+  height: 88vh;
+}
+
 .vocab-container {
   padding-left: 20px;
   padding-right: 20px;
@@ -141,4 +146,22 @@ li {
   width: 4rem; /* Set the desired width */
   height: 4rem; /* Match the height to maintain a circular shape */
   border-width: 0.5em;
+}
+
+.link-btn-container {
+  position: absolute;
+  bottom: 50px;
+  right: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.link-btn {
+  width: 50px;
+  border: 2px solid black;
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
 }

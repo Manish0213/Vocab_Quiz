@@ -31,7 +31,7 @@ const Home = () => {
   );
 
   return (
-    <>
+    <div className="home-container">
       <div className="vocab-container my-3">
         <div class="search-container">
           <input
@@ -63,7 +63,11 @@ const Home = () => {
           <p>No vocab found</p>
         )}
       </div>
-    </>
+      <div className="link-btn-container">
+      <Link to="addvocabulary" style={{ textDecoration: "none", color: "black" }}><div className="link-btn"><i class="fa-solid fa-plus fa-2x"></i></div></Link>
+      <Link to="quiz" style={{ textDecoration: "none", color: "black" }}><div className="link-btn"><i class="fa-solid fa-play fa-2x"></i></div></Link>
+      </div>
+    </div>
   );
 };
 
