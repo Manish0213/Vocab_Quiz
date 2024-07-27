@@ -150,7 +150,7 @@ li {
 
 .link-btn-container {
   position: absolute;
-  bottom: 50px;
+  bottom: 15px;
   right: 25px;
   display: flex;
   flex-direction: column;
