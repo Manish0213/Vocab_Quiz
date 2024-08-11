@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 // const User = require('./authSchema');
+// const Folder = require('./folderSchema');
 
 const vacabSchema = new Schema({
     vocab: {
@@ -22,6 +23,9 @@ const vacabSchema = new Schema({
     userId: {
         // type: mongoose.Schema.Types.ObjectId,
         // ref: User
+        type: String,
+    },
+    folderId: {
         type: String,
     }
 })

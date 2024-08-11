@@ -2,6 +2,7 @@ const express = require('express');
 const Vocabulary = require('../model/vocabSchema');
 const router = express.Router();
 const fetchUser = require('../middleware/fetchUserMiddleware');
+const Folder = require('../model/folderSchema');
 
 // Helper function to shuffle array (for randomizing options)
 function shuffle(array) {
@@ -54,9 +55,9 @@ router.get('/play', fetchUser, async (req, res) => {
 });
 
 router.post('/create', fetchUser, async (req, res) => {
-  const { vocab, meaning, sentence, description } = req.body;
+  const { vocab, meaning, sentence, description, folderId } = req.body;
   try {
-    let newVocab = new Vocabulary({ vocab, meaning, sentence, description, userId : req.user.id });
+    let newVocab = new Vocabulary({ vocab, meaning, sentence, description, folderId, userId : req.user.id });
     newVocab = await newVocab.save();
     res.status(201).send(newVocab);
   } catch (err) {
@@ -93,5 +94,42 @@ router.delete('/deletevocab/:id', async (req,res) => {
   const deletedNote = await Vocabulary.findOneAndDelete({ _id: delId })
   res.send(deletedNote);
 })
+
+router.post('/createfolder',fetchUser, async (req,res) => {
+  const {name} = req.body;
+  let newFolder = new Folder({name, userId : req.user.id});
+  newFolder = await newFolder.save();
+  res.send(newFolder);
+})
+
+router.get('/getallfolders', fetchUser, async (req,res) => {
+  const folders = await Folder.find();
+  res.send(folders);
+});
+
+router.delete('/deletefolder/:id', fetchUser, async (req,res) => {
+  const delId = req.params.id;
+  const deletedFolder = await Folder.findOneAndDelete({ _id: delId })
+  await Vocabulary.deleteMany({ folderId: deletedFolder._id });
+  res.send(deletedFolder);
+})
+
+router.get('/getVocabulary/:id', fetchUser, async (req,res) => {
+  const id = req.params.id;
+  const vocabularies = await Vocabulary.find({folderId : id});
+  res.send(vocabularies);
+});
+
+router.put('/updatefolder/:id', fetchUser, async (req, res) => {
+  const folderId = req.params.id;
+  const { name } = req.body;
+  try {
+    const updatedFolder = await Folder.findOneAndUpdate({ _id: folderId }, { $set: { name } }, { new: true });
+    res.status(201).send(updatedFolder);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 module.exports = router;
