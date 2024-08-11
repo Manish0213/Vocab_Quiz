@@ -7,16 +7,21 @@ const AddVocab = ({ showAlert }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [folders, setFolders] = useState([]);
+
   const [formData, setFormData] = useState({
     vocab: "",
     meaning: "",
     sentence: "",
     description: "",
+    folderId: "",
   });
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/login");
+    } else {
+      getFolders();
     }
   }, []);
 
@@ -29,12 +34,28 @@ const AddVocab = ({ showAlert }) => {
     event.preventDefault();
     await dispatch(addVocab(formData)).unwrap();
     showAlert("Vocabulary Added Successfully!", "success");
+    console.log(formData);
     setFormData({
       vocab: "",
       meaning: "",
       sentence: "",
       description: "",
+      folderId: "",
     });
+  };
+
+  const getFolders = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/quiz/getallfolders`,
+      {
+        method: "GET",
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
+    const data = await response.json();
+    setFolders(data);
   };
 
   return (
@@ -98,6 +119,26 @@ const AddVocab = ({ showAlert }) => {
             onChange={handleChange}
             required
           />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="folderId" className="form-label">
+            Select Folder
+          </label>
+          <select
+            className="form-control"
+            id="folderId"
+            name="folderId"
+            value={formData.folderId}
+            onChange={handleChange}
+            // required
+          >
+            <option value="">Select a folder</option>
+            {folders.map((folder) => (
+              <option key={folder._id} value={folder._id}>
+                {folder.name}
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit" class="btn btn-primary">
           Submit

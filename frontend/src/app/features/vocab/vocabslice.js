@@ -1,16 +1,29 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchAllVocab = createAsyncThunk("fetchAllVocab", async () => {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_URL}/quiz/fetchallvocab`,
-    {
-      method: "GET",
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-    }
-  );
-  return response.json();
+export const fetchAllVocab = createAsyncThunk("fetchAllVocab", async (id) => {
+  if(id) {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/quiz/getVocabulary/${id}`,
+      {
+        method: "GET",
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
+    return response.json();
+  } else {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/quiz/fetchallvocab`,
+        {
+          method: "GET",
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      return response.json();
+  }
 });
 
 export const addVocab = createAsyncThunk("addVocab", async (formData) => {

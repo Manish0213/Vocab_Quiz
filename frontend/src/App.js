@@ -10,6 +10,8 @@ import AddVocab from "./component/AddVocab";
 import View from "./component/View";
 import Edit from "./component/Edit";
 import Alert from "./component/Alert";
+import FolderList from "./component/FolderList";
+import VocabularyList from "./component/VocabularyList";
 
 const App = () => {
   const [alert, setAlert] = useState(null);
@@ -34,6 +36,8 @@ const App = () => {
           <Route path="/addvocabulary" element={<AddVocab showAlert={showAlert}/>} />
           <Route path="/view/:id" element={<View showAlert={showAlert}/>} />
           <Route path="/edit/:id" element={<Edit showAlert={showAlert}/>} />
+          <Route path="/folderlist" element={<FolderList showAlert={showAlert}/>} />
+          <Route path="/vocabularylist/:id" element={<VocabularyList/>} />
         </Routes>
       </Router>
     </>

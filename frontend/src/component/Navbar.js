@@ -39,6 +39,11 @@ const Navbar = () => {
                 Quiz
               </Link>
             </li>
+            <li class="nav-item">
+              <Link class="nav-link" aria-current="page" to="folderlist">
+                Folder List
+              </Link>
+            </li>
           </ul>
           <form class="d-flex" role="search">
             {localStorage.getItem("token") === null ? (

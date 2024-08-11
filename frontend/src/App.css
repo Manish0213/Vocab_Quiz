@@ -8,9 +8,11 @@
 
 body {
   background-color: #DEDEDE;
+  /* background-color: #C9AF7E; */
 }
 
 .container textarea,
+.container select,
 .container input {
     background-color: transparent;
     border: 3px solid #A9C2E5;
@@ -49,6 +51,11 @@ body {
 
 button[disabled] {
   cursor: not-allowed;
+  opacity: 0.6; 
+  background-color: #ccc; 
+  /* color: #666;  */
+  pointer-events: none;
+  border: none;
 }
 
 ul {
@@ -181,7 +188,7 @@ li {
   justify-content: center;
 }
 
-/* App.css */
+/* bootstrap navbar css */
 .navbar {
   background-color: black !important;
 }
@@ -208,3 +215,47 @@ li {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
 }
 
+/* folderlist component css */
+
+.folderlist {
+  height: 92vh;
+}
+
+.folder {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* border: 1px solid black; */
+  padding: 10px;
+}
+
+.folderIcon {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.folderIcon p{
+  margin-top: 18px;
+}
+
+.folder i {
+  font-size: 60px;
+  /* color: #ffcc00;  */
+}
+
+.folderOption {
+  display: flex;
+  gap: 20px;
+}
+
+.folderOption i {
+  font-size: 30px;
+  margin-top: 10px;
+}
+
+.createFolder {
+  position: absolute;
+  bottom: 15px;
+  right: 10px;
+}
