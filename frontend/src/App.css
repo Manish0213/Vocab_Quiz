@@ -259,3 +259,15 @@ li {
   bottom: 15px;
   right: 10px;
 }
+
+/* Yeh style isliye di gayi hai taki text proper formatting ke sath show ho.
+   `white-space: pre-line;` se multiple spaces remove ho jate hain aur line breaks maintain rehte hain. */
+
+.view-container div {
+  white-space: pre-line;
+}
+
+/* Modal ke andar list items me bhi proper line breaks show karne ke liye */
+.modal-body li {
+  white-space: pre-line;
+}
