@@ -161,15 +161,6 @@ li {
   font-size: 30px;
 }
 
-/* loading spinner CSS */
-.spinner-border {
-  margin-top: 50%;
-  margin-left: 40%;
-  width: 4rem;
-  height: 4rem;
-  border-width: 0.5em;
-}
-
 /* link button css */
 .link-btn-container {
   position: absolute;

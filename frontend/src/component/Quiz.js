@@ -97,9 +97,6 @@ const Quiz = () => {
 
   if (quizQuestions.length === 0) {
     return (
-      // <div class="spinner-border" role="status">
-      //   <span class="visually-hidden">Loading...</span>
-      // </div>
       <div class="center-spinner">
         <div class="spinner-grow text-dark" role="status">
           <span class="sr-only">Loading...</span>
