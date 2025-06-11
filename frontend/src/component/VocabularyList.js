@@ -20,7 +20,7 @@ const VocabularyList = () => {
     } else {
       dispatch(fetchAllVocab(id)).then(() => setLoading(false));
     }
-  }, [dispatch,id]);
+  }, [dispatch, id]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -45,8 +45,10 @@ const VocabularyList = () => {
           <button class="search-button">🔍</button>
         </div>
         {loading ? (
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
+          <div class="center-spinner">
+            <div class="spinner-grow text-dark" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
           </div>
         ) : filteredVocabs.length > 0 ? (
           filteredVocabs.map((vocab) => (

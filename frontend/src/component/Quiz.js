@@ -97,8 +97,13 @@ const Quiz = () => {
 
   if (quizQuestions.length === 0) {
     return (
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
+      // <div class="spinner-border" role="status">
+      //   <span class="visually-hidden">Loading...</span>
+      // </div>
+      <div class="center-spinner">
+        <div class="spinner-grow text-dark" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
     );
   }
@@ -121,9 +126,8 @@ const Quiz = () => {
   return (
     <>
       <div className="quiz-container">
-        <h2 className="mx-2">{`${currentQuestionIndex + 1}. ${
-          currentQuestion.question
-        }`}</h2>
+        <h2 className="mx-2">{`${currentQuestionIndex + 1}. ${currentQuestion.question
+          }`}</h2>
         <ul>
           {currentQuestion.options.map((option, index) => (
             <li key={option.id}>
@@ -135,15 +139,15 @@ const Quiz = () => {
                     ? index === currentQuestion.correctIndex
                       ? "rgba(72, 175, 77, 0.877)"
                       : index === selectedOptionIndex
-                      ? "rgba(199, 63, 63, 0.945)"
-                      : ""
+                        ? "rgba(199, 63, 63, 0.945)"
+                        : ""
                     : "",
                   color: isAnswered
                     ? index === currentQuestion.correctIndex
                       ? "white"
                       : index === selectedOptionIndex
-                      ? "white"
-                      : "black"
+                        ? "white"
+                        : "black"
                     : "black",
                 }}
                 disabled={isAnswered}

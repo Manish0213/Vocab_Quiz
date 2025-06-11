@@ -14,8 +14,8 @@ body {
 .container textarea,
 .container select,
 .container input {
-    background-color: transparent;
-    border: 3px solid #A9C2E5;
+  background-color: transparent;
+  border: 3px solid #A9C2E5;
 }
 
 .quiz-container {
@@ -51,8 +51,8 @@ body {
 
 button[disabled] {
   cursor: not-allowed;
-  opacity: 0.6; 
-  background-color: #ccc; 
+  opacity: 0.6;
+  background-color: #ccc;
   /* color: #666;  */
   pointer-events: none;
   border: none;
@@ -81,7 +81,8 @@ li {
   width: 100%;
   margin: auto;
   margin-bottom: 10px;
-  padding: 12px 10px 1px 10px; /* top right bottom left */
+  padding: 12px 10px 1px 10px;
+  /* top right bottom left */
   font-size: 16px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
@@ -235,7 +236,7 @@ li {
   gap: 15px;
 }
 
-.folderIcon p{
+.folderIcon p {
   margin-top: 18px;
 }
 
@@ -258,16 +259,4 @@ li {
   position: absolute;
   bottom: 15px;
   right: 10px;
-}
-
-/* Yeh style isliye di gayi hai taki text proper formatting ke sath show ho.
-   `white-space: pre-line;` se multiple spaces remove ho jate hain aur line breaks maintain rehte hain. */
-
-.view-container div {
-  white-space: pre-line;
-}
-
-/* Modal ke andar list items me bhi proper line breaks show karne ke liye */
-.modal-body li {
-  white-space: pre-line;
 }

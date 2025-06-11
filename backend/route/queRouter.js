@@ -103,7 +103,7 @@ router.post('/createfolder',fetchUser, async (req,res) => {
 })
 
 router.get('/getallfolders', fetchUser, async (req,res) => {
-  const folders = await Folder.find();
+  const folders = await Folder.find({ userId: req.user.id });
   res.send(folders);
 });
 

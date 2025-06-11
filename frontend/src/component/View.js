@@ -25,8 +25,10 @@ const View = ({ showAlert }) => {
 
   if (Object.keys(vocab).length === 0) {
     return (
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
+      <div class="center-spinner">
+        <div class="spinner-grow text-dark" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
     );
   }

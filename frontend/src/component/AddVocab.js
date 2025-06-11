@@ -8,6 +8,7 @@ const AddVocab = ({ showAlert }) => {
   const dispatch = useDispatch();
 
   const [folders, setFolders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     vocab: "",
@@ -32,17 +33,24 @@ const AddVocab = ({ showAlert }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await dispatch(addVocab(formData)).unwrap();
-    showAlert("Vocabulary Added Successfully!", "success");
-    console.log(formData);
-    setFormData({
-      vocab: "",
-      meaning: "",
-      sentence: "",
-      description: "",
-      folderId: "",
-    });
+    setLoading(true);
+    try {
+      await dispatch(addVocab(formData)).unwrap();
+      showAlert("Vocabulary Added Successfully!", "success");
+      setFormData({
+        vocab: "",
+        meaning: "",
+        sentence: "",
+        description: "",
+        folderId: "",
+      });
+    } catch (error) {
+      showAlert("Failed to add vocabulary", "danger");
+      console.error(error);
+    }
+    setLoading(false);
   };
+
 
   const getFolders = async () => {
     const response = await fetch(
@@ -60,6 +68,13 @@ const AddVocab = ({ showAlert }) => {
 
   return (
     <div className="container my-3">
+      {loading && (
+        <div class="center-spinner">
+          <div class="spinner-grow text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
       <h2 className="mb-4">Add Vocabulary</h2>
       <form onSubmit={handleSubmit}>
         <div class="mb-3">
@@ -130,7 +145,7 @@ const AddVocab = ({ showAlert }) => {
             name="folderId"
             value={formData.folderId}
             onChange={handleChange}
-            // required
+          // required
           >
             <option value="">Select a folder</option>
             {folders.map((folder) => (

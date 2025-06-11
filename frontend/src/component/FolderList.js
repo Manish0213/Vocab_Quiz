@@ -15,6 +15,7 @@ const FolderList = ({ showAlert }) => {
   const [folderDelId, setFolderDelId] = useState(null);
   const [editFolderId, setEditFolderId] = useState(null);
   const [editFolderName, setEditFolderName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const folders = useSelector((state) => state.folder.folders);
@@ -23,32 +24,33 @@ const FolderList = ({ showAlert }) => {
   const editModalCloseRef = useRef();
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/login");
-    } else {
-      dispatch(fetchAllFolders());
-    }
+    const fetchFolders = async () => {
+      if (!localStorage.getItem("token")) {
+        navigate("/login");
+      } else {
+        setLoading(true);
+        await dispatch(fetchAllFolders());
+        setLoading(false);
+      }
+    };
+    fetchFolders();
   }, []);
+
 
   const handleAddFolder = async (e) => {
     e.preventDefault();
-
-    // Check if folder name is empty
     if (folderName.trim() === "") {
       showAlert("Folder name cannot be empty!", "danger");
       return;
     }
 
-    // Check if folder name already exists
-    if (
-      folders.some(
-        (folder) => folder.name.toLowerCase() === folderName.toLowerCase()
-      )
-    ) {
+    if (folders.some((folder) => folder.name.toLowerCase() === folderName.toLowerCase())) {
       showAlert("Folder name already exists!", "danger");
     } else {
+      setLoading(true);
       await dispatch(addFolder(folderName)).unwrap();
-      showAlert("Folder Created Scuccessfully!", "success");
+      setLoading(false);
+      showAlert("Folder Created Successfully!", "success");
       setFolderName("");
       modalCloseRef.current.click();
     }
@@ -59,8 +61,10 @@ const FolderList = ({ showAlert }) => {
   };
 
   const handleDeleteFolder = async () => {
+    setLoading(true);
     await dispatch(deleteFolder(folderDelId)).unwrap();
-    showAlert("Folder Deleted Scuccessfully!", "success");
+    setLoading(false);
+    showAlert("Folder Deleted Successfully!", "success");
   };
 
   const handleEditClick = (id, name) => {
@@ -70,7 +74,7 @@ const FolderList = ({ showAlert }) => {
 
   const handleUpdateFolder = async (e) => {
     e.preventDefault();
-    
+
     if (editFolderName.trim() === "") {
       showAlert("Folder name cannot be empty!", "danger");
       return;
@@ -85,9 +89,9 @@ const FolderList = ({ showAlert }) => {
     ) {
       showAlert("Folder name already exists!", "danger");
     } else {
-      await dispatch(
-        updateFolder({ id: editFolderId, name: editFolderName })
-      ).unwrap();
+      setLoading(true);
+      await dispatch(updateFolder({ id: editFolderId, name: editFolderName })).unwrap();
+      setLoading(false);
       showAlert("Folder Updated Successfully!", "success");
       editModalCloseRef.current.click();
     }
@@ -95,6 +99,13 @@ const FolderList = ({ showAlert }) => {
 
   return (
     <>
+      {loading && (
+        <div class="center-spinner">
+          <div class="spinner-grow text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
       <div className="folderlist">
         {folders.map((folder) => (
           <div className="folder">
