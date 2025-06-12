@@ -70,6 +70,7 @@ li {
 .home-container {
   /* border: 2px solid black; */
   height: 88vh;
+  margin-top: 70px;
 }
 
 .vocab-container {
@@ -163,12 +164,13 @@ li {
 
 /* link button css */
 .link-btn-container {
-  position: absolute;
+  position: fixed;
   bottom: 15px;
   right: 25px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  z-index: 1000;
 }
 
 .link-btn {
